@@ -24,9 +24,11 @@ function renderProducts() {
       </div>
         <div class="add-to-cart" >
           <h2><small>$</small>${product.price}</h2>
-          <div class="btn minus" onClick="handleQuantityChange(${product.id}, -1)">-</div>
-          <div class="product-unit">1</div>
-          <div class="btn plus" onClick="handleQuantityChange(${product.id}, 1)">+</div>
+          <div class="unit-btn">
+            <div class="btn minus" onClick="handleQuantityChange(${product.id}, -1)">-</div>
+            <input type="number" class="product-unit" value="1" }></input>
+            <div class="btn plus" onClick="handleQuantityChange(${product.id}, 1)">+</div>
+          </div>
           <img src="./assets/add-to-cart.png" alt="add to cart" onClick="addToCart(${product.id})">
         </div>
     </div>
@@ -41,11 +43,11 @@ function getItemQuantityElement(id) {
 
 function handleQuantityChange(id, qty) {
   const currentQtyElement = getItemQuantityElement(id);
-  const currentQty = Number(currentQtyElement.innerText);
+  const currentQty = Number(currentQtyElement.value);
 
   const newQty = Math.max(currentQty + qty, 1);
 
-  currentQtyElement.innerText = newQty;
+  currentQtyElement.value = newQty;
 }
 
 //cart array
@@ -56,8 +58,8 @@ updateCart();
 function addToCart(id) {
   const qtyElement = getItemQuantityElement(id);
 
-  const unitsToBeAdded = Number(qtyElement.innerText);
-  qtyElement.innerText = 1; // after adding to cart, reset counter
+  const unitsToBeAdded = Number(qtyElement.value);
+  qtyElement.value = 1; // after adding to cart, reset counter
 
   //check if product already exists in cart
   if (cart.some((item) => item.id === id)) {
@@ -109,31 +111,6 @@ function splitCartByManufacturer(cart) {
 }
 
 //render cart items
-// function renderCartItems() {
-//   cartItemsEl.innerHTML = ""; //clear cart element
-//   cart.forEach((item) => {
-//     cartItemsEl.innerHTML += `
-//     <div class="cart-item">
-//                     <div class="item-info">
-//                         <h4>${item.title}</h4>
-//                     </div>
-//                     <div class="unit-price">
-//                         <small>$</small>${item.price}
-//                     </div>
-//                     <div class="units">
-//                         <div class="btn minus" onclick="changeNumberOfUnits(-1, ${item.id})">-</div>
-//                         <div class="number">${item.numberOfUnits}</div>
-//                         <div class="btn plus" onclick="changeNumberOfUnits(1, ${item.id})">+</div>
-//                     </div>
-//                     <div class="btn-delete" onclick="removeItemFromCart(${item.id})">
-//                       <img src="./assets/delete.png" alt="delete button">
-//                     </div>
-//     </div>
-//   `;
-//   });
-// }
-
-//render cart items
 function renderCartItems() {
   const manufacturers = splitCartByManufacturer(cart);
   cartItemsEl.innerHTML = manufacturers
@@ -166,7 +143,7 @@ function renderCartItems() {
          .join("")}
     `;
       html += `
-    <h4>Total: $${sum}</h4>
+    <h4 class="manufacturer-total">Total: $${sum}</h4>
       </div>
       `;
       return html;
