@@ -179,4 +179,21 @@ body {
   justify-content: center;
   padding: 15px 0;
   font-size: 1.3rem;
+}
+
+.manufacturer h3,
+.manufacturer h4 {
+  text-align: center;
+}
+
+.manufacturer h4 {
+  margin-bottom: 8px;
+}
+
+.manufacturer {
+  background-color: #ffc2e2;
+}
+
+.cart-item {
+  background: white;
 }/*# sourceMappingURL=styles.css.map */

@@ -189,3 +189,19 @@ body {
     }
   }
 }
+
+.manufacturer h3,
+.manufacturer h4 {
+  text-align: center;
+}
+
+.manufacturer h4 {
+  margin-bottom: 8px;
+}
+
+.manufacturer {
+  background-color: $light-pink;
+}
+.cart-item {
+  background: white;
+}
