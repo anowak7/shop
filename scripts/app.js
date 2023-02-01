@@ -3,8 +3,10 @@ const productsEl = document.querySelector(".products");
 const cartItemsEl = document.querySelector(".cart-items");
 const subtotalEl = document.querySelector(".subtotal");
 
+//products array
 let products = [];
 
+//render products in the shop
 function renderProducts() {
   products.forEach((product) => {
     productsEl.innerHTML += `
@@ -36,11 +38,11 @@ function renderProducts() {
     `;
   });
 }
-
+//select individual product
 function getItemQuantityElement(id) {
   return document.getElementById(`${id}`).querySelector(".product-unit");
 }
-
+//handle product quantity change in the shop
 function handleQuantityChange(id, qty) {
   const currentQtyElement = getItemQuantityElement(id);
   const currentQty = Number(currentQtyElement.value);
@@ -61,7 +63,7 @@ function addToCart(id) {
   const unitsToBeAdded = Number(qtyElement.value);
   qtyElement.value = 1; // after adding to cart, reset counter
 
-  //check if product already exists in cart
+  //check if product already exists in the cart
   if (cart.some((item) => item.id === id)) {
     changeNumberOfUnits(unitsToBeAdded, id);
   } else {
@@ -172,6 +174,7 @@ function changeNumberOfUnits(action, id) {
   updateCart();
 }
 
+//fetch products from API
 async function fetchProducts() {
   const response = await fetch("https://dummyjson.com/products");
   const json = await response.json();

@@ -1,4 +1,4 @@
-//COLOR VARIEBLES
+//COLOR VARIABLES
 
 $primary-violet: #af99ff;
 $secondary-violet: #caadff;
@@ -70,7 +70,10 @@ body {
       border-radius: 25px;
       border: 1px solid $primary-violet;
       padding: 20px 0;
-      //max-width: 250px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
 
       .item-img-desc {
         display: flex;
@@ -149,6 +152,7 @@ body {
         display: flex;
         justify-content: space-around;
         padding: 10px 0;
+        background: white;
         div {
           display: flex;
           align-items: center;
@@ -193,24 +197,20 @@ body {
         font-size: 1.3rem;
       }
     }
+    .manufacturer {
+      background-color: $light-pink;
+    }
+    .manufacturer h3,
+    .manufacturer h4 {
+      text-align: center;
+    }
+
+    .manufacturer h4 {
+      margin-bottom: 8px;
+    }
+
+    .manufacturer-total {
+      background-color: lighten(#d3d3d3, 10%);
+    }
   }
-}
-
-.manufacturer h3,
-.manufacturer h4 {
-  text-align: center;
-}
-
-.manufacturer h4 {
-  margin-bottom: 8px;
-}
-
-.manufacturer {
-  background-color: $light-pink;
-}
-.cart-item {
-  background: white;
-}
-.manufacturer-total {
-  background-color: lighten(#d3d3d3, 10%);
 }
