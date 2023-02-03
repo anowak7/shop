@@ -1,0 +1,185 @@
+//Select elements
+const productsEl = document.querySelector(".products");
+const cartItemsEl = document.querySelector(".cart-items");
+const subtotalEl = document.querySelector(".subtotal");
+
+//products array
+let products = [];
+
+//render products in the shop
+function renderProducts() {
+  products.forEach((product) => {
+    productsEl.innerHTML += `
+    <div class="item" id="${product.id}">
+    <div class="item-container">
+        <div class="item-img-desc">
+        <div class="item-img">
+        <img src="${product.images[0]}" alt="${product.title}">
+        </div>
+        <div class="desc">
+          <h2>${product.title}</h2>
+          <h3>${product.brand}</h3>
+          <p>
+          ${product.description}
+          </p>
+        </div>
+      </div>
+        <div class="add-to-cart" >
+          <h2><small>$</small>${product.price}</h2>
+          <div class="unit-btn">
+            <div class="btn minus" onClick="handleQuantityChange(${product.id}, -1)">-</div>
+            <input type="number" class="product-unit" value="1" }></input>
+            <div class="btn plus" onClick="handleQuantityChange(${product.id}, 1)">+</div>
+          </div>
+          <img src="./assets/add-to-cart.png" alt="add to cart" onClick="addToCart(${product.id})">
+        </div>
+    </div>
+</div>
+    `;
+  });
+}
+//select individual product
+function getItemQuantityElement(id) {
+  return document.getElementById(`${id}`).querySelector(".product-unit");
+}
+//handle product quantity change in the shop
+function handleQuantityChange(id, qty) {
+  const currentQtyElement = getItemQuantityElement(id);
+  const currentQty = Number(currentQtyElement.value);
+
+  const newQty = Math.max(currentQty + qty, 1);
+
+  currentQtyElement.value = newQty;
+}
+
+//cart array
+let cart = JSON.parse(localStorage.getItem("CART")) || [];
+updateCart();
+
+//ADD to cart
+function addToCart(id) {
+  const qtyElement = getItemQuantityElement(id);
+
+  const unitsToBeAdded = Number(qtyElement.value);
+  qtyElement.value = 1; // after adding to cart, reset counter
+
+  //check if product already exists in the cart
+  if (cart.some((item) => item.id === id)) {
+    changeNumberOfUnits(unitsToBeAdded, id);
+  } else {
+    const item = products.find((product) => product.id === id);
+    cart.push({
+      ...item,
+      numberOfUnits: unitsToBeAdded,
+    });
+  }
+
+  updateCart();
+}
+
+//update cart
+function updateCart() {
+  renderCartItems();
+  renderSubTotal();
+
+  //save cart to local storage
+  localStorage.setItem("CART", JSON.stringify(cart));
+}
+
+//calculate and render subtotal
+function renderSubTotal() {
+  let totalPrice = 0,
+    totalItems = 0;
+
+  cart.forEach((item) => {
+    totalPrice += item.price * item.numberOfUnits;
+    totalItems += item.numberOfUnits;
+  });
+  subtotalEl.innerHTML = `Grand Total: $${totalPrice.toFixed(2)}`;
+}
+
+//split cart by manufacturers
+function splitCartByManufacturer(cart) {
+  const manufacturers = [];
+  cart.forEach((p) => {
+    const i = manufacturers.findIndex((m) => m[0].brand === p.brand);
+    if (i === -1) {
+      manufacturers.push([p]);
+    } else {
+      manufacturers[i].push(p);
+    }
+  });
+  return manufacturers;
+}
+
+//render cart items
+function renderCartItems() {
+  const manufacturers = splitCartByManufacturer(cart);
+  cartItemsEl.innerHTML = manufacturers
+    .map((m) => {
+      let sum = 0;
+      let html = `<div class="manufacturer">
+      <h3>${m[0].brand}</h3>
+       ${m
+         .map((item) => {
+           sum += item.price * item.numberOfUnits;
+           return `
+                <div class="cart-item">
+                     <div class="item-info">
+                         <h4>${item.title}</h4>
+                     </div>
+                     <div class="unit-price">
+                         <small>$</small>${item.price}
+                     </div>
+                     <div class="units">
+                         <div class="btn minus" onclick="changeNumberOfUnits(-1, ${item.id})">-</div>
+                         <div class="number">${item.numberOfUnits}</div>
+                         <div class="btn plus" onclick="changeNumberOfUnits(1, ${item.id})">+</div>
+                     </div>
+                     <div class="btn-delete" onclick="removeItemFromCart(${item.id})">
+                       <img src="./assets/delete.png" alt="delete button">
+                     </div>
+               </div>
+     `;
+         })
+         .join("")}
+    `;
+      html += `
+    <h4 class="manufacturer-total">Total: $${sum}</h4>
+      </div>
+      `;
+      return html;
+    })
+    .join("");
+}
+
+//remove item from cart
+function removeItemFromCart(id) {
+  cart = cart.filter((item) => item.id !== id);
+  updateCart();
+}
+
+//change number of units for an item in the cart
+function changeNumberOfUnits(action, id) {
+  cart = cart.map((item) => {
+    let numberOfUnits = item.numberOfUnits;
+    if (item.id === id) {
+      numberOfUnits = Math.max(1, numberOfUnits + action);
+    }
+    return {
+      ...item,
+      numberOfUnits,
+    };
+  });
+  updateCart();
+}
+
+//fetch products from API
+async function fetchProducts() {
+  const response = await fetch("https://dummyjson.com/products");
+  const json = await response.json();
+  products = json.products.map((p) => ({ ...p, numberOfUnits: 0 }));
+  renderProducts();
+}
+
+fetchProducts();

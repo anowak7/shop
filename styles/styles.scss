@@ -1,0 +1,216 @@
+//COLOR VARIABLES
+
+$primary-violet: #af99ff;
+$secondary-violet: #caadff;
+$light-pink: #ffc2e2;
+$dark-pink: #ff99b6;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+html {
+  box-sizing: border-box;
+}
+body {
+  margin: 5% 10%;
+  font-family: "DM Sans", sans-serif;
+}
+
+// *MAIN STYLES
+
+.main-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  max-width: 1200px;
+
+  section {
+    border: 2px solid $primary-violet;
+  }
+}
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-transform: uppercase;
+  padding: 20px 0 20px 20px;
+  background-color: $primary-violet;
+  letter-spacing: 2px;
+}
+.btn {
+  width: 20px;
+  height: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: $light-pink;
+  border-radius: 50%;
+}
+/*PRODUCTS LIST*/
+.products-list {
+  padding: 20px 20px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* PRODUCTS */
+.products {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(3, 3fr);
+  gap: 1rem;
+  .item {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    .item-container {
+      border-radius: 25px;
+      border: 1px solid $primary-violet;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .item-img-desc {
+        display: flex;
+        justify-content: space-around;
+        .item-img {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          img {
+            width: 70px;
+          }
+        }
+        .desc {
+          padding: 10px;
+          h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+          }
+          h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+          }
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .add-to-cart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        gap: 1em;
+        img {
+          width: 40px;
+          height: 40px;
+          background-color: $secondary-violet;
+          cursor: pointer;
+        }
+        .product-amount {
+          font-size: 1.2rem;
+        }
+        .unit-btn {
+          display: flex;
+          gap: 2px;
+          align-items: center;
+          .minus,
+          .plus {
+            text-align: center;
+          }
+          .product-unit {
+            width: 50px;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// *CART
+.cart {
+  position: relative;
+  .cart-container {
+    .cart-heading {
+      justify-content: flex-end;
+      padding-right: 20px;
+    }
+    .cart-items {
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      .cart-item {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        background: white;
+        div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .item-info {
+          flex: 1;
+          padding: 10px;
+        }
+        .unit-price {
+          flex: 1;
+          font-size: 1.2rem;
+        }
+        .units {
+          flex: 1;
+          .number {
+            margin: 0 10px;
+            font-size: 1.2rem;
+          }
+        }
+        .btn-delete {
+          flex: 1;
+          img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .cart-footer {
+      width: 100%;
+      background-color: $primary-violet;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 0;
+        font-size: 1.3rem;
+      }
+    }
+    .manufacturer {
+      background-color: $light-pink;
+    }
+    .manufacturer h3,
+    .manufacturer h4 {
+      text-align: center;
+    }
+
+    .manufacturer h4 {
+      margin-bottom: 8px;
+    }
+
+    .manufacturer-total {
+      background-color: lighten(#d3d3d3, 10%);
+    }
+  }
+}
